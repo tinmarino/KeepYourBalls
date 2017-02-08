@@ -21,14 +21,16 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 	private Wall wall;
 	private Ball ball;
 	public Camera camera;
+	public In in;
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(this);
-		batch = new SpriteBatch();
+		in = new In(this);
 
 		world = new World(new Vector2(0,0),true);
 		world.setContactFilter(this);
+
+		batch = new SpriteBatch();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.x = 0;
 		camera.position.y = 0;
@@ -37,7 +39,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 		wall = new Wall(world);
 		ball = new Ball(world);
 
+		ball.body.setLinearVelocity(new Vector2(0, 3f));
+
 		debugRender = new Box2DDebugRenderer(); 
+	}
+
+	public boolean input(In.COMMAND cmd){
+		wall.input(cmd);
+		return true;
 	}
 
 	@Override
@@ -49,7 +58,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 	public void render(float delta) {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		world.step(60, 8, 3);
+		world.step(1/60f, 8, 3);
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
@@ -81,7 +90,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 
 	@Override
 	public boolean shouldCollide(Fixture arg0, Fixture arg1) {
-		return false;
+		return true;
 	}
 
 }

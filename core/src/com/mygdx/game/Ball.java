@@ -14,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Ball{
 
-	private Body body;
+	public Body body;
 	private Texture texture;
 	public 	Sprite sprite;
 	public float radius = 1.5f;

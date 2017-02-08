@@ -17,9 +17,27 @@ public class Wall{
 	public Sprite sprite;
 	public Body body;
 	public float width, height;
+	enum POSITION{UP, DOWN};
+	public POSITION position = POSITION.DOWN;
 
 
 
+	public boolean input(In.COMMAND cmd){
+		switch (position){
+		case DOWN:
+			body.setTransform(0, -15 / 2, 0);
+			position = POSITION.UP; 
+			break;
+		case UP:
+			body.setTransform(0, 15 / 2, 0);
+			position = POSITION.DOWN; 
+			break;
+		default:
+			break;
+		}
+		return true;
+
+	}
 
 	public void draw(SpriteBatch batch, float delta){
 		float x =  body.getPosition().x / 10 * Gdx.graphics.getWidth() - sprite.getWidth() / 2;
@@ -31,6 +49,7 @@ public class Wall{
 
 	public Wall(World world){
 		init(world);
+		input(In.COMMAND.TAP);
 	}
 
 	public void init(World world){
@@ -40,7 +59,6 @@ public class Wall{
 		// body definition
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
-		bodyDef.position.set(0, -15 / 2);
 		body = world.createBody(bodyDef);
 
 		// FixtureShape 
@@ -50,7 +68,7 @@ public class Wall{
 		// BodyFixture 
 		FixtureDef fixture = new FixtureDef();
 		fixture.shape = shape;
-		fixture.restitution = 1;
+		fixture.restitution = 1.2f;
 		fixture.friction = 0;
 		body.createFixture(fixture);
 
