@@ -1,5 +1,5 @@
 .gitignore
-.todo
+todo
 ## Java
 
 *.class
