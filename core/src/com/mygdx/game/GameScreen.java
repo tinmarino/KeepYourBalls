@@ -20,8 +20,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 	private Box2DDebugRenderer debugRender;
 	private Wall wall;
 	private Ball ball;
-	public Camera camera;
-	public In in;
+	private Camera camera;
+	private In in;
 
 	@Override
 	public void show() {
@@ -56,7 +56,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		world.step(1/60f, 8, 3);
 
@@ -67,10 +67,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 		batch.end();
 
 		// Debug
-		float scale = Gdx.graphics.getWidth() * 0.1f;
-		Matrix4 m = camera.combined.cpy();
-		m.scl(scale);
-		debugRender.render(world, m); 
+		// float scale = Gdx.graphics.getWidth() * 0.1f;
+		// Matrix4 m = camera.combined.cpy();
+		// m.scl(scale);
+		// debugRender.render(world, m); 
 	}
 
 
