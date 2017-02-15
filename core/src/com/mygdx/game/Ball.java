@@ -1,9 +1,12 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,13 +21,29 @@ public class Ball{
 	private Texture texture;
 	public 	Sprite sprite;
 	public float radius = 1.5f;
+	private float x, y;
+	
+
+
+
+	public void act(float delta){
+		x =  body.getPosition().x / 10 * Gdx.graphics.getWidth();
+		y =  body.getPosition().y / 15 * Gdx.graphics.getHeight();
+	}
 
 	public void draw(SpriteBatch batch, float delta){
-		float x =  body.getPosition().x / 10 * Gdx.graphics.getWidth() - sprite.getWidth() / 2;
-		float y =  body.getPosition().y / 15 * Gdx.graphics.getHeight() - sprite.getHeight() / 2;
-		sprite.setPosition(x, y);
+		act(delta);
+		sprite.setPosition(x  - sprite.getHeight() / 2, y - sprite.getHeight() / 2);
 		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 		sprite.draw(batch);
+	}
+
+	public void draw(ShapeRenderer shapeRenderer, float delta){
+		act(delta);
+		shapeRenderer.setColor(G.RED);
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.circle(x, y, radius * Gdx.graphics.getWidth() / 10);
+		shapeRenderer.end();
 	}
 
 
@@ -55,5 +74,9 @@ public class Ball{
 			radius * 2 / 10 * Gdx.graphics.getWidth());
 		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		body.setUserData(this); 
+	}
+
+	public void dispose(){
+		
 	}
 }

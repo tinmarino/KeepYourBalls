@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ContactFilter;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 	private SpriteBatch batch;
 	private World world;
+	private ShapeRenderer shapeRenderer;
 	private Box2DDebugRenderer debugRender;
 	private Wall wall;
 	private Camera camera;
@@ -31,6 +33,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 
 		world = new World(new Vector2(0,0),true);
 		world.setContactFilter(this);
+
+		shapeRenderer = new ShapeRenderer();
 
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -70,11 +74,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-		for (Ball ball : ballList){
-			ball.draw(batch, delta);
-		}
-		wall.draw(batch, delta);
+			wall.draw(batch, delta);
 		batch.end();
+
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		for (Ball ball : ballList){
+			ball.draw(shapeRenderer, delta);
+		}
 
 		// Debug
 		// float scale = Gdx.graphics.getWidth() * 0.1f;
