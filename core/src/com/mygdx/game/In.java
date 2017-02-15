@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 public class In implements InputProcessor {
@@ -15,7 +16,11 @@ public class In implements InputProcessor {
 	}
 
 	@Override
-	public boolean keyDown(int arg0) {
+	public boolean keyDown(int key) {
+		if (key == Keys.S){
+			G.screenShot();
+			return true;
+		}
 		return gameScreen.input(COMMAND.TAP);
 	}
 
