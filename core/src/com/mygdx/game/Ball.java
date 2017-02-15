@@ -20,12 +20,19 @@ public class Ball{
 	public Body body;
 	private Texture texture;
 	public 	Sprite sprite;
-	public float radius = 1.5f;
+	public float radius;
 	public Color color;
 	private float x, y;
 	
 
 
+	public float xWorld(){
+		return body.getPosition().x;
+	}
+
+	public float yWorld(){
+		return body.getPosition().y;
+	}
 
 	public void act(float delta){
 		x =  body.getPosition().x / 10 * Gdx.graphics.getWidth();
@@ -47,9 +54,13 @@ public class Ball{
 		shapeRenderer.end();
 	}
 
+	public float getY(){
+		return y;
+	}
 
-	public Ball(World world, Color color){
+	public Ball(World world, Color color, float radius){
 		this.color = color;
+		this.radius = radius;
 
 		// body definition
 		BodyDef bodyDef = new BodyDef();
@@ -71,15 +82,12 @@ public class Ball{
 		body.createFixture(fixtureDef);
 
 		// Add Body Sprite 
-		texture = new Texture("img/ball.png");
-		sprite = new Sprite(texture);
-		sprite.setSize( radius * 2 / 10 * Gdx.graphics.getWidth(), 
-			radius * 2 / 10 * Gdx.graphics.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		body.setUserData(this); 
-	}
-
-	public void dispose(){
+		// texture = new Texture("img/ball.png");
+		// sprite = new Sprite(texture);
+		// sprite.setSize( radius * 2 / 10 * Gdx.graphics.getWidth(), 
+		// 	radius * 2 / 10 * Gdx.graphics.getWidth());
+		// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 		
+		body.setUserData(this); 
 	}
 }
