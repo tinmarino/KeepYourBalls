@@ -17,7 +17,7 @@ import com.badlogic.gdx.physics.box2d.ContactFilter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class GameScreen extends InputAdapter implements Screen, ContactFilter{
+public class GameScreen implements Screen, ContactFilter{
 	private SpriteBatch batch;
 	private World world;
 	private ShapeRenderer shapeRenderer;
@@ -45,10 +45,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 		wall = new Wall(world);
 
 		ballList = new ArrayList<Ball>();
-		Ball ball = new Ball(world);
+		Ball ball = new Ball(world, G.RED);
 		ball.body.setLinearVelocity(new Vector2(0, 3f));
 		ballList.add(ball);
-		Ball ball2 = new Ball(world);
+		Ball ball2 = new Ball(world, G.BLUE);
 		ball2.body.setLinearVelocity(new Vector2(0, 2f));
 		ball2.sprite.setTexture(Pix.texCircle(100, Color.BLUE));
 		ballList.add(ball2);
@@ -74,12 +74,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactFilter{
 
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-			wall.draw(batch, delta);
 		batch.end();
 
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		for (Ball ball : ballList){
 			ball.draw(shapeRenderer, delta);
+			wall.draw(shapeRenderer, delta);
 		}
 
 		// Debug

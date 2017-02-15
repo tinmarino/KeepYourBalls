@@ -21,6 +21,7 @@ public class Ball{
 	private Texture texture;
 	public 	Sprite sprite;
 	public float radius = 1.5f;
+	public Color color;
 	private float x, y;
 	
 
@@ -40,14 +41,16 @@ public class Ball{
 
 	public void draw(ShapeRenderer shapeRenderer, float delta){
 		act(delta);
-		shapeRenderer.setColor(G.RED);
+		shapeRenderer.setColor(color);
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.circle(x, y, radius * Gdx.graphics.getWidth() / 10);
 		shapeRenderer.end();
 	}
 
 
-	public Ball(World world){
+	public Ball(World world, Color color){
+		this.color = color;
+
 		// body definition
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;

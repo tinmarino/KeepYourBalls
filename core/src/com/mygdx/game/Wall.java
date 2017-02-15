@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -19,6 +21,7 @@ public class Wall{
 	public float width, height;
 	enum POSITION{UP, DOWN};
 	public POSITION position = POSITION.DOWN;
+	private float x, y;
 
 
 
@@ -39,13 +42,27 @@ public class Wall{
 
 	}
 
+	public void act(float delta){
+		x =  body.getPosition().x / 10 * Gdx.graphics.getWidth();
+		y =  body.getPosition().y / 15 * Gdx.graphics.getHeight();
+	}
+
 	public void draw(SpriteBatch batch, float delta){
-		float x =  body.getPosition().x / 10 * Gdx.graphics.getWidth() - sprite.getWidth() / 2;
-		float y =  body.getPosition().y / 15 * Gdx.graphics.getHeight() - sprite.getHeight() / 2;
-		sprite.setPosition(x, y);
+		act(delta);
+		sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
 		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 		sprite.draw(batch);
 	}
+
+
+	public void draw(ShapeRenderer shapeRenderer, float delta){
+		act(delta);
+		shapeRenderer.setColor(G.WALL);
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.rect(-Gdx.graphics.getWidth()/2, y - Gdx.graphics.getHeight()/40f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/20f);
+		shapeRenderer.end();
+	}
+
 
 	public Wall(World world){
 		init(world);
