@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import java.util.ArrayList;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -99,7 +100,7 @@ public class GameScreen implements Screen, ContactFilter{
 
 
 	public void window(){
-		stage = new Stage(viewport);
+		stage = new Stage();
 
 		// Images
 		SkinLib skinLib = new SkinLib();
@@ -163,7 +164,7 @@ public class GameScreen implements Screen, ContactFilter{
 		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+		Gdx.app.log("deaz", " pos " + camera.position);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		for (Ball ball : ballList){
 			ball.draw(shapeRenderer, delta);
