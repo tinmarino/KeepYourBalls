@@ -2,11 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -16,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Wall{
 	public Texture texture; 
-	public Sprite sprite;
 	public Body body;
 	public float width, height;
 	enum POSITION{UP, DOWN};
@@ -46,14 +42,6 @@ public class Wall{
 		x =  body.getPosition().x / 10 * Gdx.graphics.getWidth();
 		y =  body.getPosition().y / 15 * Gdx.graphics.getHeight();
 	}
-
-	public void draw(SpriteBatch batch, float delta){
-		act(delta);
-		sprite.setPosition(x - sprite.getWidth() / 2, y - sprite.getHeight() / 2);
-		sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
-		sprite.draw(batch);
-	}
-
 
 	public void draw(ShapeRenderer shapeRenderer, float delta){
 		act(delta);
@@ -90,11 +78,6 @@ public class Wall{
 		body.createFixture(fixture);
 
 		// Add Body Sprite 
-		texture = new Texture("img/wall.png");
-		sprite = new Sprite(texture);
-		sprite.setSize(width / 10 * Gdx.graphics.getWidth(), 
-				height / 15 * Gdx.graphics.getHeight());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2); // to resize and rotate around the origin, here center of the sprite
 		body.setUserData(this); 
 	}	
 }
