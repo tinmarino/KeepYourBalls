@@ -35,8 +35,8 @@ public class Ball{
 	}
 
 	public void act(float delta){
-		x =  body.getPosition().x / 10 * Gdx.graphics.getWidth();
-		y =  body.getPosition().y / 15 * Gdx.graphics.getHeight();
+		x =  body.getPosition().x * G.world2Screen;
+		y =  body.getPosition().y * G.world2Screen;
 	}
 
 	public void draw(SpriteBatch batch, float delta){
@@ -50,7 +50,7 @@ public class Ball{
 		act(delta);
 		shapeRenderer.setColor(color);
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.circle(x, y, radius * Gdx.graphics.getWidth() / 10);
+		shapeRenderer.circle(x, y, radius * G.world2Screen);
 		shapeRenderer.end();
 	}
 
@@ -82,12 +82,6 @@ public class Ball{
 		body.createFixture(fixtureDef);
 
 		// Add Body Sprite 
-		// texture = new Texture("img/ball.png");
-		// sprite = new Sprite(texture);
-		// sprite.setSize( radius * 2 / 10 * Gdx.graphics.getWidth(), 
-		// 	radius * 2 / 10 * Gdx.graphics.getWidth());
-		// sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		
 		body.setUserData(this); 
 	}
 }

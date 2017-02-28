@@ -25,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen, ContactFilter{
 	private World world;
@@ -33,6 +34,7 @@ public class GameScreen implements Screen, ContactFilter{
 	private Camera camera;
 	private Stage stage;
 	private In in;
+	private Viewport viewport;
 	private ArrayList<Ball> ballList;
 	private ArrayList<Ball> removeBallList = new ArrayList<Ball>();
 	private ArrayList<Ball> addBallList = new ArrayList<Ball>();
@@ -40,20 +42,23 @@ public class GameScreen implements Screen, ContactFilter{
 
 	@Override
 	public void show() {
+		G.world2Screen = Gdx.graphics.getWidth() / G.wSize.x;
 		in = new In(this);
 		Gdx.input.setInputProcessor(in);
 
 		world = new World(new Vector2(0,0),true);
 		world.setContactFilter(this);
-
 		shapeRenderer = new ShapeRenderer();
 
-		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.position.x = 0;
-		camera.position.y = 0;
-		camera.update();
+
+		camera = new OrthographicCamera();
+		viewport = new FitViewport(G.wSize.x * G.world2Screen, G.wSize.y * G.world2Screen, camera);
+		viewport.apply();
 		
+		// Walls 
 		wall = new Wall(world);
+		verticalWall(-1); 
+		verticalWall(1); 
 
 		// Initial balls 
 		ballList = new ArrayList<Ball>();
@@ -65,9 +70,6 @@ public class GameScreen implements Screen, ContactFilter{
 		ball2.body.setLinearVelocity(new Vector2(0, 2f));
 		ballList.add(ball2);
 
-		// verticl walll 
-		verticalWall(-1); 
-		verticalWall(1); 
 	}
 
 	private void verticalWall(int side){
@@ -78,27 +80,26 @@ public class GameScreen implements Screen, ContactFilter{
 
 		// FixtureShape 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(1, 15);		
+		shape.setAsBox(1, G.wSize.y);		
 		
 		// BodyFixture 
 		FixtureDef fixture = new FixtureDef();
 		fixture.shape = shape;
-		fixture.restitution = 1.2f;
+		fixture.restitution = 1.1f;
 		fixture.friction = 0;
 		body.createFixture(fixture);
 
 		if (side == -1){
-			body.setTransform(-6f, 7.5f, 0);
+			body.setTransform(- G.wSize.x/2 - 1, G.wSize.y/2, 0);
 		}
 		else{
-			body.setTransform(6f, 7.5f, 0);
+			body.setTransform(G.wSize.x/2 + 1, G.wSize.y/2, 0);
 		}
 	}
 
 
 	public void window(){
-		FitViewport fitViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage = new Stage(fitViewport);
+		stage = new Stage(viewport);
 
 		// Images
 		SkinLib skinLib = new SkinLib();
@@ -198,7 +199,9 @@ public class GameScreen implements Screen, ContactFilter{
 	public void pause() { } 
 
 	@Override
-	public void resize(int arg0, int arg1) { }
+	public void resize(int width, int height) {
+		viewport.update(width, height);
+	}
 
 	@Override
 	public void resume() { }

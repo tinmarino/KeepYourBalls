@@ -3,14 +3,17 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.math.Vector2;
 // not html
 // import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class G{
 	public static MainGame game;
+
+	public static float world2Screen;
+	public static Vector2 wSize = new Vector2(10, 15);
 
 	public static final Color BLUE = new Color(0x00bcd4ff);
 	public static final Color GREEN = new Color(0xcddc39ff);

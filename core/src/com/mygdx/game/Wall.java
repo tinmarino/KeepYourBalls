@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -17,18 +16,17 @@ public class Wall{
 	public float width, height;
 	enum POSITION{UP, DOWN};
 	public POSITION position = POSITION.DOWN;
-	private float x, y;
 
 
 
 	public boolean input(In.COMMAND cmd){
 		switch (position){
 		case DOWN:
-			body.setTransform(0, -15 / 2, 0);
+			body.setTransform(0, -G.wSize.y / 2, 0);
 			position = POSITION.UP; 
 			break;
 		case UP:
-			body.setTransform(0, 15 / 2, 0);
+			body.setTransform(0, G.wSize.y / 2, 0);
 			position = POSITION.DOWN; 
 			break;
 		default:
@@ -38,16 +36,13 @@ public class Wall{
 
 	}
 
-	public void act(float delta){
-		x =  body.getPosition().x / 10 * Gdx.graphics.getWidth();
-		y =  body.getPosition().y / 15 * Gdx.graphics.getHeight();
-	}
-
 	public void draw(ShapeRenderer shapeRenderer, float delta){
-		act(delta);
 		shapeRenderer.setColor(G.WALL);
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.rect(-Gdx.graphics.getWidth()/2, y - Gdx.graphics.getHeight()/40f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/20f);
+		shapeRenderer.rect(-0.5f * G.wSize.x * G.world2Screen, 
+				(body.getPosition().y - height/2) * G.world2Screen, 
+				G.wSize.x * G.world2Screen, 
+				height * G.world2Screen);
 		shapeRenderer.end();
 	}
 
@@ -58,8 +53,8 @@ public class Wall{
 	}
 
 	public void init(World world){
-		width = 10;
-		height = 15 / 20f;
+		width = G.wSize.x;
+		height = G.wSize.y / 10f;
 
 		// body definition
 		BodyDef bodyDef = new BodyDef();
