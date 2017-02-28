@@ -27,4 +27,13 @@ public class G{
 		pixmap.dispose();
 	}
 
+
+
+	public static void routinePlay(){
+		G.game.setScreen(new GameScreen());
+	}
+
+	public static void routineHome(){
+		G.game.setScreen(new MenuScreen());
+	}
 }

@@ -8,26 +8,30 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ContactFilter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class GameScreen implements Screen, ContactFilter{
-	private SpriteBatch batch;
 	private World world;
 	private ShapeRenderer shapeRenderer;
-	private Box2DDebugRenderer debugRender;
 	private Wall wall;
 	private Camera camera;
+	private Stage stage;
 	private In in;
 	private ArrayList<Ball> ballList;
 	private ArrayList<Ball> removeBallList = new ArrayList<Ball>();
@@ -37,13 +41,13 @@ public class GameScreen implements Screen, ContactFilter{
 	@Override
 	public void show() {
 		in = new In(this);
+		Gdx.input.setInputProcessor(in);
 
 		world = new World(new Vector2(0,0),true);
 		world.setContactFilter(this);
 
 		shapeRenderer = new ShapeRenderer();
 
-		batch = new SpriteBatch();
 		camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.x = 0;
 		camera.position.y = 0;
@@ -64,8 +68,6 @@ public class GameScreen implements Screen, ContactFilter{
 		// verticl walll 
 		verticalWall(-1); 
 		verticalWall(1); 
-
-		debugRender = new Box2DDebugRenderer(); 
 	}
 
 	private void verticalWall(int side){
@@ -93,7 +95,47 @@ public class GameScreen implements Screen, ContactFilter{
 		}
 	}
 
+
+	public void window(){
+		FitViewport fitViewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		stage = new Stage(fitViewport);
+
+		// Images
+		SkinLib skinLib = new SkinLib();
+		ImageButton buttonHome = new ImageButton(skinLib.getImageButtonRoundHouse(200, G.BLUE));
+		ImageButton buttonPlay = new ImageButton(skinLib.getImageButtonRoundPlay(200, G.RED));
+		Image imageDark = new Image(PixmapFactory.getDrawableMonocromatic(1, 1, new Color(0.5f, 0.5f, 0.5f, 0.5f), null));
+		imageDark.setFillParent(true);
+
+		// Listeners
+		buttonPlay.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y); 
+				routinePlay(); 
+			}});
+		buttonHome.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y); 
+				G.routineHome(); 
+			}});
+
+
+		Table table = new Table();
+		table.add(buttonHome).row();
+		table.add(buttonPlay).row();
+		table.setFillParent(true);
+		stage.addActor(imageDark);
+		stage.addActor(table);
+		Gdx.input.setInputProcessor(stage);
+	}
+
 	public boolean input(In.COMMAND cmd){
+		if (In.COMMAND.ESCAPE == cmd){
+			window();
+			return true;
+		}
 		wall.input(cmd);
 		return true;
 	}
@@ -120,9 +162,6 @@ public class GameScreen implements Screen, ContactFilter{
 		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		batch.end();
 
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		for (Ball ball : ballList){
@@ -130,11 +169,6 @@ public class GameScreen implements Screen, ContactFilter{
 		}
 		wall.draw(shapeRenderer, delta);
 
-		// Debug
-		// float scale = Gdx.graphics.getWidth() * 0.1f;
-		// Matrix4 m = camera.combined.cpy();
-		// m.scl(scale);
-		// debugRender.render(world, m); 
 		for (Ball ball : ballList){
 			if (ball.body.getPosition().y < -7.5f || ball.body.getPosition().y > 7.5f)
 			{
@@ -146,10 +180,15 @@ public class GameScreen implements Screen, ContactFilter{
 		addBallList.clear();
 		removeBallList.clear();
 
-		world.step(delta, 1, 3);
+		// Pause or Step
+		if (null != stage){
+			stage.act();
+			stage.draw();
+		}
+		else{
+			world.step(delta, 1, 3);
+		}
 	}
-
-
 
 
 	@Override
@@ -167,6 +206,12 @@ public class GameScreen implements Screen, ContactFilter{
 	@Override
 	public boolean shouldCollide(Fixture arg0, Fixture arg1) {
 		return true;
+	}
+
+	public void routinePlay(){
+		stage.dispose();
+		stage = null;
+		Gdx.input.setInputProcessor(in);
 	}
 
 }

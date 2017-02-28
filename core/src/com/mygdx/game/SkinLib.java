@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Disposable;
 
@@ -36,7 +38,9 @@ public class SkinLib{
 		colorSelection 		= Color.WHITE;
 		colorButtonUp 		= Color.GREEN;
 		colorButtonDown 	= Color.BLUE;
-	}
+
+		font = getFontStandard();
+	}	
 
 	public Skin getStandardSkin(){
 		Skin skin = new Skin();
@@ -45,14 +49,8 @@ public class SkinLib{
 
 	}
 
-
-
-
-
-
-
 	public static BitmapFont getFontStandard(){
-		return new BitmapFont();
+		return new BitmapFont(Gdx.files.internal("font/adequate32.fnt"));
 	}
 
 
@@ -86,9 +84,35 @@ public class SkinLib{
 		style.down = PixmapFactory.drawableFromPixmap(pixmapDown);
 		return style;
 	}
+
+	public ImageButtonStyle getImageButtonRoundHouse(int radius, Color color){
+		ImageButtonStyle style = new ImageButtonStyle(); 
+		Pixmap pixmapUp  	= PixmapFactory.circle(radius, color);
+		Pixmap pixmapDown  	= PixmapFactory.circle(radius, colorButtonDown);
+		PixmapFactory.house(pixmapUp, Color.WHITE, color);
+		style.up = PixmapFactory.drawableFromPixmap(pixmapUp);
+		style.down = PixmapFactory.drawableFromPixmap(pixmapDown);
+		return style;
+	}
 	//
 	// STYLES from AES encryptor
 	//
+
+	// Sure you dont need a table (static, no font)? 
+	public WindowStyle getWindow(){
+		WindowStyle style = new WindowStyle();
+		style.titleFont = font;
+		return style;
+ 		///** Optional. */
+		//public Drawable background;
+		//public BitmapFont titleFont;
+		///** Optional. */
+		//public Color titleFontColor = new Color(1, 1, 1, 1);
+		///** Optional. */
+		//public Drawable stageBackground;
+	}
+
+
 	public ImageButtonStyle getImageButton(){
 		ImageButtonStyle style = new ImageButtonStyle(); 
 		style.up = PixmapFactory.getDrawableMonocromatic(1,1,new Color(1,1,1, 0.01f), null);

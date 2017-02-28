@@ -1,18 +1,15 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 public class In implements InputProcessor {
-	enum COMMAND{TAP}
-	private COMMAND command;
+	enum COMMAND{TAP, ESCAPE}
 	private GameScreen gameScreen;
 
 
  	public In(GameScreen gameScreen){
 		this.gameScreen = gameScreen;
-		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
@@ -20,6 +17,10 @@ public class In implements InputProcessor {
 		if (key == Keys.S){
 			G.screenShot();
 			return true;
+		}
+		if (key == Keys.ESCAPE){
+			return gameScreen.input(COMMAND.ESCAPE);
+
 		}
 		return gameScreen.input(COMMAND.TAP);
 	}

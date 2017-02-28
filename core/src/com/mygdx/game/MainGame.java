@@ -9,6 +9,7 @@ public class MainGame extends Game {
 		G.game = this;
 		// screen = new GameScreen();
 		screen = new MenuScreen();
+		// screen = new GameOverScreen();
 		screen.show();
 	}
 }

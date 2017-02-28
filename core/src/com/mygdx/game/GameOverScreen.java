@@ -3,21 +3,19 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-public class MenuScreen implements Screen {
+public class GameOverScreen implements Screen{
 	SkinLib skinLib;
 	Stage stage;
-	Table table;
+	Table table, tableScore;
 	ImageButton buttonPlay, buttonMusic, buttonStat;
-	ImageButton buttonRate;
-	Image imageStudio, imageTitle; 
+	Label labelGameOver, labelScore, labelBestScore;
 	float width, height;
 
 
@@ -30,31 +28,42 @@ public class MenuScreen implements Screen {
 		table = new Table();
 		table.setWidth(width);
 		table.setHeight(height);
+		tableScore = new Table();
 		Gdx.input.setInputProcessor(stage);
 		skinLib = new SkinLib();
 
 		// Images 
-		imageTitle = new Image(new Texture("img/title.png"));
+		labelGameOver = new Label("GAME OVER", skinLib.getLabel());
 		buttonStat = new ImageButton(skinLib.getImageButtonRoundStat(400, G.RED));
 		buttonPlay = new ImageButton(skinLib.getImageButtonRoundPlay(400, G.GREEN));
 		buttonMusic = new ImageButton(skinLib.getImageButtonRoundMusic(400, G.BLUE));
-		imageStudio = new Image(new Texture("img/studio.png"));
 
 		// Listeners
 		buttonPlay.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y); 
-				G.routinePlay(); 
+				routinePlay(); 
+			}});
+		buttonStat.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y); 
+				routineStat(); 
+			}});
+		buttonMusic.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y); 
+				routineMusic(); 
 			}});
 
-
 		// Packing 
-		table.add(imageTitle	).height(height/5).row();
-		table.add(buttonStat	).size(height/7).padLeft(0.5f * width).row();
-		table.add(buttonPlay	).size(height/7).row();
-		table.add(buttonMusic	).size(height/7).padRight(0.5f * width).row();
-		table.add(imageStudio	).height(height/10).width(0.7f * width).row();
+		table.add(labelGameOver ).height(height/5).colspan(2).row();
+		table.add(tableScore	).height(height/5).colspan(2).row();
+		table.add(buttonPlay	).size(height/7).colspan(2).row();
+		table.add(buttonMusic	).size(0.10f * height);
+		table.add(buttonStat	).size(0.10f * height).padLeft(0.5f * width);
 
 
 		stage.addActor(table);
@@ -83,6 +92,14 @@ public class MenuScreen implements Screen {
 	@Override
 	public void resume() { }
 
+	public void routinePlay(){
+		G.game.setScreen(new GameScreen());
+	}
 
+	public void routineStat(){
+	}
+
+	public void routineMusic(){
+	}
 
 }

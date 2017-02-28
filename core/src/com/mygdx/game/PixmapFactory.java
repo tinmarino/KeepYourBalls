@@ -226,30 +226,28 @@ public class PixmapFactory{
 		int width = pixmap.getWidth();
 		int height = pixmap.getHeight();
 		pixmap.setColor(color);
-		int x = (int) (0.16f * width);
-		int rwidth = (int) (0.20f * width);
-		int cradius = (int) (0.5f * rwidth);
+		int x = 		(int) (0.16f * width);
+		int rwidth = 	(int) (0.20f * width);
+		int cradius = 	(int) (0.5f * rwidth);
 		// FIRST 
-		x += 0;
 		int y = (int) (0.5f * width);
 		int rheight = (int) (0.3f * height);
 		pixmap.fillRectangle(x, y, rwidth, rheight);
-		pixmap.fillCircle(x + rwidth/2, y, cradius);
+		pixmap.fillCircle(x + cradius, y, cradius);
 		// SECOND
 		x += (int) (rwidth + 0.05f * width);
 		y = (int) (0.3f * height);
 		rheight = (int) (0.5f * height);
 		pixmap.fillRectangle(x, y, rwidth, rheight);
-		pixmap.fillCircle(x + rwidth/2, y, cradius);
+		pixmap.fillCircle(x + cradius, y, cradius);
 		// THIRD
 		x += (int) (rwidth + 0.05f * width);
 		y = (int) (0.6f * height);
 		rheight = (int) (0.2f * height);
 		pixmap.fillRectangle(x, y, rwidth, rheight);
-		pixmap.fillCircle(x + rwidth/2, y, cradius);
+		pixmap.fillCircle(x + cradius, y, cradius);
 
 		return pixmap;
-
 	}
 
 
@@ -271,9 +269,38 @@ public class PixmapFactory{
 		pixmap.fillCircle(x2, y2 + rheight, rwidth);
 		// TOP
 		fillQuadrilateral(pixmap, x, y, x, y + rwidth, x2, y2, x2 + rwidth, y2 + rwidth);
+		return pixmap;
+	}
+
+	public static Pixmap house(Pixmap pixmap, Color color, Color colorBackground){
+		int width = pixmap.getWidth();
+		int height = pixmap.getHeight();
+		pixmap.setColor(color);
+		// BOTTOM BOX
+		int x = 		(int) (0.30f * width);
+		int y = 		(int) (0.40f * height);
+		int rwidth = 	(int) (0.40f * width);
+		int rheight = 	(int) (0.25f * width);
+		pixmap.fillRectangle(x, y, rwidth, rheight);
+		// TOP TRIANGLE
+		int x2 = (int) (0.20f * width);
+		int y2 = (int) (0.45f * height);
+		int x3 = (int) (0.50f * width);
+		int y3 = (int) (0.15f * height);
+		int x4 = (int) (0.80f * width);
+		pixmap.fillTriangle(x2, y2, x3, y3, x4, y2);
+		// DOOR RECTANGLE
+		pixmap.setColor(colorBackground);
+		x = 		(int) (0.425f * width);
+		y = 		(int) (0.50f * width);
+		rwidth = 	(int) (0.15f * width);
+		rheight = 	(int) (0.15f * width);
+		pixmap.fillRectangle(x, y, rwidth, height);
+		// DOOR CIRCLE 
+		x = 		(int) (0.50f * width);
+		pixmap.fillCircle(x, y, (int) (rwidth / 2));
 		
 		return pixmap;
-
 	}
 
 
