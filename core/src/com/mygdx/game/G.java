@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class G{
+	public static MainGame game;
 
 	public static final Color BLUE = new Color(0x00bcd4ff);
 	public static final Color GREEN = new Color(0xcddc39ff);
