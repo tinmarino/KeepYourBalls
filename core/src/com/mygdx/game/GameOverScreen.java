@@ -31,6 +31,7 @@ public class GameOverScreen implements Screen{
 		tableScore = new Table();
 		Gdx.input.setInputProcessor(stage);
 		skinLib = new SkinLib();
+		skinLib.initFont();
 
 		// Images 
 		labelGameOver = new Label("GAME OVER", skinLib.getLabel());

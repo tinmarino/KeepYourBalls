@@ -38,9 +38,10 @@ public class SkinLib{
 		colorSelection 		= Color.WHITE;
 		colorButtonUp 		= Color.GREEN;
 		colorButtonDown 	= Color.BLUE;
-
-		font = getFontStandard();
 	}	
+	public void initFont(){
+		font = getFont();
+	}
 
 	public Skin getStandardSkin(){
 		Skin skin = new Skin();
@@ -49,7 +50,7 @@ public class SkinLib{
 
 	}
 
-	public static BitmapFont getFontStandard(){
+	public static BitmapFont getFont(){
 		return new BitmapFont(Gdx.files.internal("font/adequate32.fnt"));
 	}
 

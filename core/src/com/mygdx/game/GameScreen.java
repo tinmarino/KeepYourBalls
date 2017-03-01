@@ -164,7 +164,6 @@ public class GameScreen implements Screen, ContactFilter{
 		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		Gdx.app.log("deaz", " pos " + camera.position);
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		for (Ball ball : ballList){
 			ball.draw(shapeRenderer, delta);
@@ -172,7 +171,7 @@ public class GameScreen implements Screen, ContactFilter{
 		wall.draw(shapeRenderer, delta);
 
 		for (Ball ball : ballList){
-			if (ball.body.getPosition().y < -7.5f || ball.body.getPosition().y > 7.5f)
+			if (ball.body.getPosition().y < -G.wSize.y / 2 || ball.body.getPosition().y > G.wSize.y / 2)
 			{
 				die(ball);
 			}
