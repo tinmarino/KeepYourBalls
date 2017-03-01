@@ -169,12 +169,13 @@ public class PixmapFactory{
 		Pixmap mask = new Pixmap(fg.getWidth(), fg.getHeight(), Pixmap.Format.Alpha);
 
 		// Cut a rectangle of alpha value 0
-		Pixmap.setBlending(Pixmap.Blending.None);
+		//cannot refer to this non static method
+		//Pixmap.setBlending(Pixmap.Blending.None);
 		mask.setColor(new Color(0f, 0f, 0f, 0.2f));
 		mask.fillRectangle(0, 0,fg.getWidth(), fg.getHeight());
 
 		fg.drawPixmap(mask, fg.getWidth(), fg.getHeight());
-		Pixmap.setBlending(Pixmap.Blending.SourceOver);
+		//Pixmap.setBlending(Pixmap.Blending.SourceOver);
 		
 		Texture res = new Texture(fg); 
 		fg.dispose();
